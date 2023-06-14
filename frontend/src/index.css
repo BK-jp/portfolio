@@ -1,13 +1,31 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root{
+    --color1: #071013;
+    --color2: #0E3A43;
+    --color3: #156373;
+    --color4: #23B5D3;
+    --color5: #4CB0C8;
+    --color6: #75ABBC;
+    --color7: #8CADBC;
+    --color8: #A2AEBB;
+    --color9: #C1C7CF;
+    --color10: #DFE0E2;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+*{box-sizing: border-box; font-family: 'M PLUS 1p',sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+ul{list-style: none; padding: 0; margin: 0;}
+body {padding: 0; margin: 0;}
+code {font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;}
+.text{padding: 10px; border: 1px solid var(--color8); outline: none; background-color: white; border-radius: 0.5em; font-size: 16px;}
+.button{padding: 5px 10px; border: 1px solid transparent; border-radius: 0.5em; font-size: 16px; font-weight: bold;}
+.button.c5{background-color: var(--color5); border: 1px solid var(--color5); color: white;}
+.button.c5:hover{background-color: var(--color4); cursor: pointer;}
+
+.tx-wrap{position: relative; margin-top: 12px;}
+.tx-wrap > .placeholder{position: absolute; left: 0; top: 0; width: 100%; height: 100%; padding: 10px 20px; transition: .3s ease; cursor: text; background-color: transparent; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--color8);}
+.tx-wrap > .placeholder.active{left: 10px; top: -10px; font-size: 12px; padding: 0 10px; background-color: white; width: auto; height: auto;}
+.tx-wrap:focus-within > .text{border: 1px solid var(--color4);}
+.tx-wrap:focus-within > .placeholder{left: 10px; top: -10px; font-size: 12px; padding: 0 10px; background-color: white; width: auto; height: auto; color: var(--color4);}
+
+.form > .input-wrap{margin-bottom: 1em;}
+.form > .input-wrap .text{width: 100%;}
+.form > .submit-wrap{text-align: right;}
