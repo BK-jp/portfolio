@@ -5,6 +5,7 @@ import { authenticationCheck } from "js/config";
 import App from 'App';
 import Login from 'views/Login';
 import Portfolio from "views/portfolio/index";
+import Profile from "views/portfolio/Profile";
 
 export const router = createBrowserRouter (
     [
@@ -22,7 +23,16 @@ export const router = createBrowserRouter (
                 {
                     path: '/portfolio',
                     loader: () => (authenticationCheck() ? null : redirect('/')),
-                    element: <Portfolio />
+                    element: (
+                        <Portfolio />
+                    ),
+                    children: [
+                        {
+                            path: '/portfolio/test',
+                            loader: () => (authenticationCheck() ? null : redirect('/')),
+                            element: <Profile/>
+                        }
+                    ]
                 }
             ]
         }

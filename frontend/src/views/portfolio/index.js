@@ -1,27 +1,26 @@
 import React from "react";
-import request from 'js/request';
+import { Link, Outlet } from "react-router-dom";
+import Footer from "views/include/Footer";
+
+import 'css/Portfolio.css'
 
 function Portfolio(){
-    const test = () =>{
-        request.get({
-            url: '/auth/test',
-            data: {},
-            res: function(data){
-                if(data.code !== 0){
-                    alert(data.message);
-                }
-            },
-            err: function(data){
-                console.log(data);
-            }
-        });
-    };
-
     return (
-        <>
-            Portfolio
-            <button onClick={test}>test</button>
-        </>
+        <div className="main">
+            <div className="nav-wrap">
+                <nav>
+                    <ul>
+                        <li>
+                            <Link to="/portfolio/test">test</Link>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div className="page-wrap">
+                <Outlet/>
+                <Footer/>
+            </div>
+        </div>
     )
 }
 
