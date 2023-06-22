@@ -4,8 +4,13 @@ import { authenticationCheck } from "js/config";
 
 import App from 'App';
 import Login from 'views/Login';
+
 import Portfolio from "views/portfolio/index";
-import Profile from "views/portfolio/Profile";
+import Profile from "views/portfolio/profile/index";
+import Introduce from "views/portfolio/profile/Introduce";
+import About from "views/portfolio/profile/About";
+
+import NotFound from "views/error/NotFound";
 
 export const router = createBrowserRouter (
     [
@@ -28,13 +33,28 @@ export const router = createBrowserRouter (
                     ),
                     children: [
                         {
-                            path: '/portfolio/test',
+                            path: '/portfolio/profile',
                             loader: () => (authenticationCheck() ? null : redirect('/')),
-                            element: <Profile/>
+                            element: (
+                                <Profile/>
+                            ),
+                            children: [
+                                {
+                                    path: '/portfolio/profile/introduce',
+                                    loader: () => (authenticationCheck() ? null : redirect('/')),
+                                    element: <Introduce/>
+                                },
+                                {
+                                    path: '/portfolio/profile/about',
+                                    loader: () => (authenticationCheck() ? null : redirect('/')),
+                                    element: <About/>
+                                }
+                            ]
                         }
                     ]
                 }
-            ]
+            ],
+            errorElement: <NotFound />
         }
     ]
 )
