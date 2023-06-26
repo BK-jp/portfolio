@@ -20,6 +20,7 @@ const login = ({data}) =>{
 }
 
 const post = ({url, data, res, err}) => {
+    document.querySelector('.loadingBox').classList.add('show');
     axios
         .post('/api'+url, data, {headers: getRequestHeader()})
         .then(response =>{
@@ -30,7 +31,6 @@ const post = ({url, data, res, err}) => {
             }
         })
         .catch(error =>{
-            console.log(error);
             if(error.response.status === 401){
                 refreshToken(result =>{
                     if(result){
@@ -43,6 +43,9 @@ const post = ({url, data, res, err}) => {
             }else{
                 return err(error.response.data);
             }
+        })
+        .finally(()=>{
+            document.querySelector('.loadingBox').classList.remove('show');
         });
 }
 

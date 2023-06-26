@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -50,6 +51,11 @@ func main() {
 	if err != nil {
 		panic("controller error")
 	}
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost",
+		AllowHeaders: "Authorization",
+	}))
 
 	app.Use(jwtware.New(jwtware.Config{
 		SigningMethod: "HS256",

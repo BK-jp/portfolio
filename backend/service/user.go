@@ -42,20 +42,16 @@ func (s *UserService) Login(c *fiber.Ctx) error {
 	user := new(dto.User)
 	data := fiber.Map{}
 	if err := c.BodyParser(user); err != nil {
-		return fmt.Errorf("c.BodyParser: %v", err)
+		return errors.New("情報を読み取れません。")
 	}
 
-	u, err := s.UserRepository.SelectOneUserByEmail(user.Email)
+	u, err := s.UserRepository.SelectOneUserByEmailAndPassword(user)
 
 	if err != nil {
 		return errors.New("メールやパスワードが一致しません。")
 	}
 
-	if user.Password != u.Password {
-		return errors.New("メールやパスワードが一致しません。")
-	}
-
-	token, err2 := createToken(user.Email)
+	token, err2 := createToken(u.Email)
 
 	if err2 != nil {
 		return errors.New("ログイン情報作成に失敗しました。")
@@ -117,10 +113,36 @@ func (s *UserService) GetNewAccessToken(c *fiber.Ctx) error {
 	return nil
 }
 
-func (s *UserService) Test(c *fiber.Ctx) error {
-	c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "test",
+func (s *UserService) GetLoginUser(c *fiber.Ctx) error {
+	data := fiber.Map{}
+	Authorization := c.Get("Authorization", "")
+
+	if Authorization == "" {
+		return errors.New("無効な要求です。")
+	}
+
+	accessToken := strings.Replace(Authorization, "Bearer ", "", 1)
+
+	claims := jwt.MapClaims{}
+
+	jwt.ParseWithClaims(accessToken, &claims, func(t *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("ACCESS_SECRET")), nil
 	})
+
+	email := claims["user_id"].(string)
+	user := new(dto.User)
+
+	user, err := s.UserRepository.SelectOneUserByEmail(email)
+
+	if err != nil {
+		return errors.New("ログイン情報を読み取れません。")
+	}
+
+	user.Password = ""
+	data["user"] = user
+
+	c.Status(fiber.StatusOK).JSON(data)
+
 	return nil
 }
 

@@ -17,12 +17,14 @@ func Connect() (*sql.DB, error) {
 	}
 
 	var (
-		dbUser = os.Getenv("DB_USER")
-		dbPwd  = os.Getenv("DB_PASSWORD")
-		dbName = os.Getenv("DB_NAME")
+		dbUser     = os.Getenv("DB_USER")
+		dbPwd      = os.Getenv("DB_PASSWORD")
+		dbName     = os.Getenv("DB_NAME")
+		dbLocation = os.Getenv("DB_LOCATION")
+		dbPort     = os.Getenv("DB_PORT")
 	)
 
-	dbURI := fmt.Sprintf("%s:%s@tcp(34.64.89.31:3306)/%s?parseTime=true", dbUser, dbPwd, dbName)
+	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPwd, dbLocation, dbPort, dbName)
 
 	db, err := sql.Open("mysql", dbURI)
 	if err != nil {

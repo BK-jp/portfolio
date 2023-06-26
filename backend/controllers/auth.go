@@ -27,13 +27,12 @@ func NewAuthController(router fiber.Router) (*AuthController, error) {
 func (c *AuthController) SetRouter() {
 	c.router.Post("/login", c.userService.Login)
 	c.router.Post("/refreshToken", c.userService.GetNewAccessToken)
-	c.router.Get("/test", c.userService.Test)
+	c.router.Post("/getInfo", c.userService.GetLoginUser)
 }
 
 func (c *AuthController) GetRouterMap() map[string]bool {
 	accessible := make(map[string]bool)
 	accessible["/api/auth/login"] = true
-	accessible["/api/auth/test"] = false
 	accessible["/api/auth/refreshToken"] = true
 
 	return accessible

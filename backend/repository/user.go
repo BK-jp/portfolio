@@ -14,15 +14,34 @@ var UserRepositoryImpl UserRepository
 
 func (r *UserRepository) SelectOneUserByEmail(email string) (*dto.User, error) {
 	user := new(dto.User)
-
 	query := `
 		SELECT	email
 				,password
+				,name
 		FROM	active_user
 		WHERE	email = ?
 	`
 
-	err := r.DB.QueryRow(query, email).Scan(&user.Email, &user.Password)
+	err := r.DB.QueryRow(query, email).Scan(&user.Email, &user.Password, &user.Name)
+
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (r *UserRepository) SelectOneUserByEmailAndPassword(user *dto.User) (*dto.User, error) {
+	query := `
+		SELECT	email
+				,password
+				,name
+		FROM	active_user
+		WHERE	email = ?
+				AND password = SHA2(?, 256)
+	`
+
+	err := r.DB.QueryRow(query, user.Email, user.Password).Scan(&user.Email, &user.Password, &user.Name)
 
 	if err != nil {
 		return user, err

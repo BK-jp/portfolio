@@ -4,9 +4,13 @@ services:
     build: ./backend
     expose:
       - 9000
+    ports:
+      - 9000:9000
   frontend:
     build: ./frontend
     expose:
       - 3000
     ports:
-      - 3000:3000
+      - 80:80
+    extra_hosts:
+      - "host.docker,internal:host-gateway"

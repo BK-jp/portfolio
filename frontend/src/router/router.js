@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter, Navigate, redirect } from "react-router-dom";
 
 import { authenticationCheck } from "js/config";
 
@@ -9,8 +9,10 @@ import Portfolio from "views/portfolio/index";
 import Profile from "views/portfolio/profile/index";
 import Introduce from "views/portfolio/profile/Introduce";
 import About from "views/portfolio/profile/About";
+import Skill from "views/portfolio/profile/Skill";
+import Career from "views/portfolio/profile/Career";
 
-import NotFound from "views/error/NotFound";
+import ErrorPage from "views/error/ErrorPage";
 
 export const router = createBrowserRouter (
     [
@@ -26,35 +28,48 @@ export const router = createBrowserRouter (
                     element: <Login />
                 },
                 {
-                    path: '/portfolio',
+                    path: '/portfolio/*',
                     loader: () => (authenticationCheck() ? null : redirect('/')),
                     element: (
                         <Portfolio />
                     ),
                     children: [
                         {
-                            path: '/portfolio/profile',
-                            loader: () => (authenticationCheck() ? null : redirect('/')),
+                            path: '',
+                            element: <Navigate to="/portfolio/profile/introduce"/>
+                        },
+                        {
+                            path: 'profile/*',
                             element: (
-                                <Profile/>
+                                <Profile />
                             ),
                             children: [
                                 {
-                                    path: '/portfolio/profile/introduce',
-                                    loader: () => (authenticationCheck() ? null : redirect('/')),
-                                    element: <Introduce/>
+                                    path: '',
+                                    element: <Navigate to="/portfolio/profile/introduce"/>
                                 },
                                 {
-                                    path: '/portfolio/profile/about',
-                                    loader: () => (authenticationCheck() ? null : redirect('/')),
+                                    path: 'introduce',
+                                    element: <Introduce />
+                                },
+                                {
+                                    path: 'about',
                                     element: <About/>
+                                },
+                                {
+                                    path: 'skill',
+                                    element: <Skill/>
+                                },
+                                {
+                                    path: 'career',
+                                    element: <Career/>
                                 }
                             ]
                         }
                     ]
                 }
             ],
-            errorElement: <NotFound />
+            errorElement: <ErrorPage />
         }
     ]
 )
